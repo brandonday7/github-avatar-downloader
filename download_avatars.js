@@ -1,10 +1,12 @@
 let request = require('request');
 let fs = require('fs');
+require('dotenv').config();
+
 console.log('Welcome to the Github Avatar Downloader');
 let args = process.argv;
 
-let GITHUB_USER = 'brandonday7';
-let GITHUB_TOKEN = '77c654116d70e01b4d42e819c69243f56168d60d';
+let GITHUB_USER = process.env.GITHUB_USER;
+let GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 const REPO_NAME = args[2];
 const REPO_OWNER = args[3];
@@ -26,7 +28,7 @@ if (REPO_NAME && REPO_OWNER) {
 else {
   console.log("A repo name and owner must be input!");
   console.log("Example: ");
-  console.log("\tnode download_avatars.js jquery jquery");
+  console.log("\tnode download_avatars.js repoOwner repoName");
 }
 
 
