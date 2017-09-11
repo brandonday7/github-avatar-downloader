@@ -13,7 +13,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
     headers: {
       'User-Agent': USER_AGENT_HEADER}
   }
-  var avatarURLs = {};
+
   request.get(options, function(error, response, body) {
     if (error) {
       console.log("There was an error! Error number: ", error)
@@ -21,10 +21,8 @@ function getRepoContributors(repoOwner, repoName, cb) {
     }
 
     var list = JSON.parse(body);
-    for (contributor in list) {
-      avatarURLs[contributor] = list[contributor]['avatar_url'];
-    }
-    cb(null, avatarURLs);
+
+    cb(null, list);
   })
 }
 
@@ -44,11 +42,13 @@ function downloadImageByURL(url, filePath) {
 }
 
 
-// getRepoContributors("jquery", "jquery", function(err, result) {
-//   for (link in result) {
-//     console.log(result[link]);
-//   }
-// });
+getRepoContributors("jquery", "jquery", function(err, result) {
+  for (contributor in result) {
+    let url = result[contributor]['avatar_url'];
+    console.log(result[contributor].login, ": ", url);
+    let filePath = './avatars/' + result[contributor].login + '.jpg'; //make sure there is an empty avatars folder on comp
+    downloadImageByURL(url, filePath);
+  }
+});
 
-downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466avatars/kvirani.jpg", "./pic.jpg")
 
