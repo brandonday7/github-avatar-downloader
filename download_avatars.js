@@ -12,14 +12,20 @@ function getRepoContributors(repoOwner, repoName, cb) {
     headers: {
       'User-Agent': USER_AGENT_HEADER}
   }
-  request.get(options)
-    .on('error', function() {
-      throw err;
-    })
-    .on('response', function(response) {
-      console.log("Response Status Code: ", response.statusCode);
-      console.log("Status message: ", response.statusMessage)
-    });
+  var avatarURLs = {};
+  request.get(options, function(error, response, body) {
+    if (error) {
+      console.log("There was an error! Error number: ", error)
+      throw error;
+    }
+
+    var list = JSON.parse(body);
+    for (contributor in list) {
+      avatarURLs[contributor] = list[contributor]['avatar_url'];
+    }
+    cb(null, avatarURLs);
+  })
+
 
 }
 
